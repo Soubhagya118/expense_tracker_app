@@ -1,9 +1,10 @@
 import './App.css';
+import SignUp from './components/Authentication/SignUp/SignUp';
 
 function App() {
   return (
     <div className="App">
-     a
+     <SignUp/>
     </div>
   );
 }
