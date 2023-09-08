@@ -1,35 +1,32 @@
-import React, { useRef, useState } from 'react';
-import classes from './SignUp.module.css'
+import React, { useRef, useState ,useContext} from 'react';
+import classes from './SignUp.module.css';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../../store/AuthCtx';
 
-const SignUp = () => {
+const SignUp = (props) => {
 const [isLoggin,setIsLoggin] =useState();    
 const inputEmail =useRef();
 const inputPassword =useRef();
 const inputConfirmPassword =useRef();
+const navigaete =useNavigate();
+const authCtxx= useContext(AuthContext);
+
+// const [storeAuth,setStoreAuth] =useState();
+let data;
+if(authCtxx?.idToken){
+  data=authCtxx?.idToken;
+}else{data=[]}
+const [idTokenData,setIdTokenData] =useState(data);
+
 let url='https://identitytoolkit.googleapis.com/v1/accounts:'
 let api='AIzaSyAkMk6UO0ngHH7v1mMLuxpVzXm_0oJ1wC4';
 
-const authHandler =()=>{
-    setIsLoggin((e)=>!e);
-}
-
-    const signUpFormHandler=(e)=>{
+    const signUpFormHandler=async (e)=>{
         e.preventDefault();
        const email1=inputEmail.current.value;
        const password1 = inputPassword.current.value;
-if(isLoggin==false){
-       var confirmpassword1=inputConfirmPassword.current.value;
-}
-       let fullUrl;
-if(isLoggin){
-        fullUrl=`${url}signInWithPassword?key=${api}`
-}
-else{
-    fullUrl = `${url}signUp?key=${api}`;
-    if(confirmpassword1!=password1){
-        return alert('PLEASE CORRECT YOUR PASSWORD')
-}
-fetch(fullUrl,{
+
+const res= await fetch(`${url}signUp?key=${api}`,{
     method:'POST',
     headers:{
          'Content-Type': 'application/json'
@@ -40,29 +37,23 @@ fetch(fullUrl,{
          returnSecureToken:true
 
      })
-
-
- })
- 
- .then(res=>{
-    console.log("res",res)
-     if(!res.ok){
-         throw new Error('............invalid Input')
-     }
-     return res.json()
- }).then((data)=>{
-         console.log("user has succesfully signUp", data)
- }).catch(err=>{
-     console.log(err.message)
- })
+})
+if(!res.ok){
+throw new Error('...SignUp Error')
 }
+ const data= res.json();
+ console.log("signup succesfully",data);
+
+ navigaete('/')
+
 }
+
   return (
     <div>
       <section >
         <div className={classes.formDiv}>
             <form className={classes.form} onSubmit={signUpFormHandler}>
-            <h1>{!isLoggin?'SignUp':'LogIn'}</h1>
+            <h1 style={{textAlign:'center',fontSize:'20px'}}>SignUp</h1>
           
                 <div className={classes.inputdiv}>
                 <label htmlFor='email'>Email</label>
@@ -78,13 +69,14 @@ fetch(fullUrl,{
                 </div>
             
                 <div className={classes.inputdiv2}>
-                <button > {isLoggin?'Login':'SignUp'}
+                <button > SignUp
               </button>
                 </div>
-                {isLoggin?<a href='#'>Forget Password</a>:''}
                 
             </form>
-            <div className={classes.inputdiv3} onClick={authHandler}> {isLoggin?"Don't have an account?Sign up":'Have an account? Login'}</div>
+            
+            <div className={classes.inputdiv3} >Have an Account?<span style={{textDecoration:'underline',color:'blue',cursor:'pointer'}} onClick={props.authHandler}>LogIn</span></div>
+
 
         </div>
       </section>
