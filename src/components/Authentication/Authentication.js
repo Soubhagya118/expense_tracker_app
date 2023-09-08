@@ -13,7 +13,7 @@ const Authentication = () => {
     
   return (
     <div className={classes.formDiv}>
-    {!isLoggin&&<SignUp authHandler={authHandler}/>}
+    {!isLoggin&& <SignUp authHandler={authHandler}/>}
       {isLoggin&&<SignIn authHandler={authHandler}/>}
     </div>
   )

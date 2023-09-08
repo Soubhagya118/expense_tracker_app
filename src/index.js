@@ -6,6 +6,7 @@ import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 import Authentication from './components/Authentication/Authentication';
 import Home from './components/Home/Home';
 import ForgotPass from './components/Authentication/ForgotPassword/ForgotPass';
+import Expanses from './components/Daily_Expanses/Expanses';
 
 const routers=createBrowserRouter([{
   path:'/',
@@ -21,6 +22,9 @@ element:<Authentication/>
 ,{
    path:'/forgot-password',
    element:<ForgotPass/>
+},{
+  path:'/expanses',
+  element:<Expanses/>
 }
   ]
 }])
