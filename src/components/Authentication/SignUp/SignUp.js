@@ -43,6 +43,7 @@ throw new Error('...SignUp Error')
 }
  const data= res.json();
  console.log("signup succesfully",data);
+ authCtxx.isLogginHandler(true)
 
  navigaete('/')
 
@@ -57,13 +58,13 @@ throw new Error('...SignUp Error')
           
                 <div className={classes.inputdiv}>
                 <label htmlFor='email'>Email</label>
-                <input id='email' type='email' ref={inputEmail} required/>
+                <input id='email' type='email' ref={inputEmail} style={{border:'1px solid black'}} required/>
 
                 <label htmlFor='password'>Password</label>
-                <input id='password' type='password' ref={inputPassword} required/>
+                <input id='password' type='password' style={{border:'1px solid black'}} ref={inputPassword} required/>
                 {!isLoggin?<>
                 <label htmlFor='confirmpassword'>Confirm Password</label>
-                <input id='confirmpassword' type='password' ref={inputConfirmPassword} required/></>:''}
+                <input id='confirmpassword' type='password' style={{border:'1px solid black'}} ref={inputConfirmPassword} required/></>:''}
 
 
                 </div>

@@ -7,7 +7,7 @@ const Verifyemail = () => {
 
     const authCtx= useContext(AuthContext);
     let idToken= authCtx?.userDetails?.idToken;
-    console.log("idToken",idToken)
+    // console.log("idToken",idToken)
 
     const verifyEmailHandler = async(e)=>{
 

@@ -6,6 +6,7 @@ const AuthContext =createContext({
     userUpdatedData:{},
     userDetailsHandler:()=>{},
     isLogginHandler:()=>{},
+    LoggOutHandler:()=>{},
     userUpdatedDetails:()=>{}
 });
 
@@ -33,6 +34,13 @@ export const AuthContextProvider =({children})=>{
         localStorage.setItem('loggedIn',d);
 
     }
+    const LoggOutHandlerFn=(da)=>{
+    setLoggin(da);
+    setUserDetails('')
+    localStorage.setItem('loggedIn',da);
+
+    localStorage.removeItem('userDetaills');
+    }
     const userDetailsHandlerFn=(data)=>{
      //   const newD= {...userDetails,data}
         setUserDetails(data);
@@ -45,19 +53,21 @@ const userUpdatedDetailsFn=(dataup)=>{
     localStorage.setItem('userUpdated',nD);
 }
 
+
     const authCtx={
         userDetails:userDetails,
         isLoggin:loggin,
         userUpdatedData:userUpdatedData,
         userDetailsHandler:userDetailsHandlerFn,
         isLogginHandler:isLogginHandlerFn,
+        LoggOutHandler:LoggOutHandlerFn,
         userUpdatedDetails:userUpdatedDetailsFn,
 
     }
 return(
     <AuthContext.Provider value={authCtx}>
 {children}{console.log("authCtx",authCtx)}
-{console.log("auth userDetails",typeof authCtx.userDetails)}
+{/* {console.log("auth userDetails",typeof authCtx.userDetails)} */}
     </AuthContext.Provider>
 )
 }

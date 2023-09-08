@@ -1,5 +1,5 @@
 import React,{useRef,useContext} from 'react';
-import { useNavigate, } from 'react-router-dom';
+import { Link, useNavigate, } from 'react-router-dom';
 import classes from './SignIn.module.css';
 import AuthContext from '../../store/AuthCtx';
 
@@ -74,10 +74,10 @@ const signInFormHandler=async (e)=>{
   
         <div className={classes.inputdiv}>
         <label htmlFor='email'>Email</label>
-        <input id='email' type='email' ref={inputEmail} required/>
+        <input id='email' type='email' ref={inputEmail} style={{border:'1px solid black'}} required/>
 
         <label htmlFor='password'>Password</label>
-        <input id='password' type='password' ref={inputPassword} required/>
+        <input id='password' type='password' ref={inputPassword} style={{border:'1px solid black'}} required/>
        
 
         </div>
@@ -86,7 +86,7 @@ const signInFormHandler=async (e)=>{
         <button style={{cursor:'pointer'}}> Login
       </button>
         </div>
-        <a href='#' style={{textAlign:'center'}}>Forget Password</a>
+        <Link to='/forgot-password' style={{textAlign:'center',textDecoration:'underline',color:'blue'}}>Forget Password</Link>
         
     </form>
     <div className={classes.inputdiv3} >Don't have an account?

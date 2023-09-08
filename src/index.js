@@ -5,7 +5,7 @@ import App from './App';
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 import Authentication from './components/Authentication/Authentication';
 import Home from './components/Home/Home';
-import GitProfile from './components/GitProfile/GitProfile';
+import ForgotPass from './components/Authentication/ForgotPassword/ForgotPass';
 
 const routers=createBrowserRouter([{
   path:'/',
@@ -18,10 +18,10 @@ element:<Authentication/>
   path:'/',
   element:<Home/>
 }
-// ,{
-//   path:'/:id',
-//   element:<GitProfile/>
-// }
+,{
+   path:'/forgot-password',
+   element:<ForgotPass/>
+}
   ]
 }])
 
