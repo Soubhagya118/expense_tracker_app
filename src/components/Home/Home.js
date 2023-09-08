@@ -1,6 +1,7 @@
 import React,{useContext, useRef, useState} from 'react';
 import GitProfile from '../GitProfile/GitProfile';
 import AuthContext from '../store/AuthCtx';
+import Verifyemail from '../Authentication/VerifyEmail/Verifyemail';
 
 const Home = () => {
   const authCtx=useContext(AuthContext);
@@ -16,13 +17,14 @@ const Home = () => {
     <section style={{margin:'1rem 1rem'}}>
    
     <div style={{display:'flex',justifyContent:'space-between',padding:'0.rem',fontFamily:'sans-serif'}} >
-    <div>
+    <div className='flex gap-5'>
       <h2>Welcome to Expense Tracker</h2>
+      <Verifyemail/>
     </div>
    {isCompleteProfile && 
-   <div style={{background:'lightgrey',padding:'0.4rem',borderRadius:'10px',fontSize:'small',textAlign:'center',justifyContent:'center',width:'250px'}}><p>your profile is incomplete.<button style={{color:'blue', background:'transparent',border:'none'}} onClick={()=>setIsCompleteProfile(e=>!e)}><i>Complete now</i></button></p></div>
+   <div style={{background:'lightgrey',padding:'0.4rem',borderRadius:'10px',fontSize:'small',textAlign:'center',justifyContent:'center',width:'250px',height:'30px'}}><p>your profile is incomplete.<button style={{color:'blue', background:'transparent',border:'none'}} onClick={()=>setIsCompleteProfile(e=>!e)}><i>Complete now</i></button></p></div>
    }
-   {!isCompleteProfile &&   <div style={{background:'lightgrey',padding:'0.4rem',borderRadius:'10px',fontSize:'small',textAlign:'center',justifyContent:'center',width:'300px'}}><p>your profile is 64%completed.A complete Profile has higher chances of landing a job.<button style={{color:'blue', background:'transparent',border:'none'}} onClick={()=>setIsCompleteProfile(e=>!e)}><i>Complete now</i></button></p></div>}
+   {!isCompleteProfile &&   <div style={{background:'lightgrey',padding:'0.4rem',borderRadius:'10px',fontSize:'small',textAlign:'center',justifyContent:'center',width:'300px',height:'65px'}}><p>your profile is 64%completed.A complete Profile has higher chances of landing a job.<button style={{color:'blue', background:'transparent',border:'none'}} onClick={()=>setIsCompleteProfile(e=>!e)}><i>Complete now</i></button></p></div>}
    </div>
   
    <div style={{width:'100%',display:'flex',justifyContent:'end', marginTop:'1rem'}} >
