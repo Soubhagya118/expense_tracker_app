@@ -1,4 +1,8 @@
 import React,{useCallback, useEffect, useRef, useState} from 'react'
+import {FaEdit, FaTrash} from 'react-icons/fa';
+
+
+
 
 const Expanses = () => {
     const inputMoney =useRef();
@@ -8,7 +12,7 @@ const Expanses = () => {
 
 
 
-const getData=useCallback( async()=>{
+const getData=useCallback(async()=>{
   
 fetch('https://expensetrackerapp-ca61f-default-rtdb.firebaseio.com/expense.json',{
   method:'GET',
@@ -38,7 +42,7 @@ fetch('https://expensetrackerapp-ca61f-default-rtdb.firebaseio.com/expense.json'
   console.log(err.message);
 })
 
-},[])
+},[]);
 
 
     const expenseHandler=async(e)=>{
@@ -72,6 +76,59 @@ fetch('https://expensetrackerapp-ca61f-default-rtdb.firebaseio.com/expense.json'
 })
 };
 
+// ===================================================================delete=================================================
+
+const deleteData=(id)=>{
+  console.log("dletefn",id)
+  fetch(`https://expensetrackerapp-ca61f-default-rtdb.firebaseio.com/expense/${id}.json`,{
+    method:'DELETE',
+    headers:{
+      'Content-Type':'application/json'
+    }
+  }).then(res=>{
+    if(!res.ok){
+      alert('........Error in Delete Request');
+      throw new Error('........Error in Delete Request');
+    }
+    return res.json();
+  }).then(data=>{
+    console.log(data);
+    getData();
+  })
+}
+// =====================================================================edit function===================
+const editData=async(id)=>{
+  
+  const money1=inputMoney.current.value;
+  const inputCat1 = inputCat.current.value;
+  const inputDes1=inputDes.current.value;
+
+
+fetch(`https://expensetrackerapp-ca61f-default-rtdb.firebaseio.com/expense/${id}.json`,{
+method:'PUT',
+headers:{
+'Content-Type':'application/json'
+},
+body:JSON.stringify({
+  id:id,
+money:money1,
+description:inputDes1,
+catagorey:inputCat1
+})
+}).then(res=>{
+if(!res.ok){
+alert('...error occur in PUT request');
+throw new Error('...error occur in PUT request')
+}
+return res.json();
+}).then(data=>{
+console.log("expense tracker PUT data",data);
+getData();
+}).catch(err=>{
+console.log(err.message);
+})
+};
+
 useEffect(()=>{
   getData()
 },[]);
@@ -99,11 +156,14 @@ useEffect(()=>{
       <div className='w-auto m-auto'>
       <ul className='m-auto'>
       {/* {console.log("exx",expanseData)} */}
-      {expanseData?.map((e)=><li key={e.id} className='flex gap-5 border-2 border-blue-100 m-auto'>
+      {expanseData?.map((ele)=><li key={ele.id} className='flex gap-5 border-2 border-blue-100 m-auto justify-between'>
 
-        <p>money:- {e.money}</p>
-        <p>description:- {e.description}</p>
-        <p>catagorey:- {e.catagorey}</p>
+        <p>money:- {ele.money}</p>
+        <p>description:- {ele.description}</p>
+        <p>catagorey:- {ele.catagorey}</p>
+        <button onClick={()=>editData(ele.id)}><FaEdit/></button>
+        {/* {console.log("render delete",ele.id)} */}
+        <button onClick={()=> deleteData(ele.id)}> <FaTrash/> </button>
 
       </li>)}
       </ul>
