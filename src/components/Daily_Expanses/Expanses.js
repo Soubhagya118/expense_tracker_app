@@ -1,4 +1,4 @@
-import React,{useRef, useState} from 'react'
+import React,{useCallback, useEffect, useRef, useState} from 'react'
 
 const Expanses = () => {
     const inputMoney =useRef();
@@ -6,20 +6,75 @@ const Expanses = () => {
     const inputDes= useRef();
     const [expanseData,setExpanseData] =useState([]);
 
-    const expenseHandler=(e)=>{
+
+
+const getData=useCallback( async()=>{
+  
+fetch('https://expensetrackerapp-ca61f-default-rtdb.firebaseio.com/expense.json',{
+  method:'GET',
+  headers:{
+    'Content-Type':'application/json'
+  }
+}).then(res=>{
+  if(!res.ok){
+    alert('...error occur in get request');
+    throw new Error('...error occur in get request')
+  }
+  return res.json();
+}).then(data=>{
+  const dataList=[];
+  for(const key in data){
+    dataList.push({
+      id:key,
+      money:data[key].money,
+      description:data[key].description,
+      catagorey:data[key].catagorey
+    })
+  }
+  setExpanseData([...dataList]);
+
+  console.log("expense tracker get data",dataList);
+}).catch(err=>{
+  console.log(err.message);
+})
+
+},[])
+
+
+    const expenseHandler=async(e)=>{
         e.preventDefault();
         const money1=inputMoney.current.value;
         const inputCat1 = inputCat.current.value;
         const inputDes1=inputDes.current.value;
 
-console.log("expanses data",money1,inputCat1,inputDes1);
-setExpanseData([...expanseData,{
+
+fetch('https://expensetrackerapp-ca61f-default-rtdb.firebaseio.com/expense.json',{
+  method:'POST',
+  headers:{
+    'Content-Type':'application/json'
+  },
+  body:JSON.stringify({
     money:money1,
     description:inputDes1,
-    catagorey:inputCat1,
-    id:Math.random()
-}])
-    };
+    catagorey:inputCat1
+  })
+}).then(res=>{
+  if(!res.ok){
+    alert('...error occur in post request');
+    throw new Error('...error occur in post request')
+  }
+  return res.json();
+}).then(data=>{
+  console.log("expense tracker post data",data);
+  getData();
+}).catch(err=>{
+  console.log(err.message);
+})
+};
+
+useEffect(()=>{
+  getData()
+},[]);
 
   return (
     <section className='w-xl justify-center my-5'>
@@ -43,7 +98,7 @@ setExpanseData([...expanseData,{
       </form>
       <div className='w-auto m-auto'>
       <ul className='m-auto'>
-      {console.log("exx",expanseData)}
+      {/* {console.log("exx",expanseData)} */}
       {expanseData?.map((e)=><li key={e.id} className='flex gap-5 border-2 border-blue-100 m-auto'>
 
         <p>money:- {e.money}</p>
