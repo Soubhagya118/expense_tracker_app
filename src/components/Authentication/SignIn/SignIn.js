@@ -1,10 +1,16 @@
 import React,{useRef,useContext} from 'react';
 import { Link, useNavigate, } from 'react-router-dom';
 import classes from './SignIn.module.css';
-import AuthContext from '../../store/AuthCtx';
+import {useSelector,useDispatch} from 'react-redux';
+import { isSignUpReducerFn ,isLogginReducerFn , userIdReducerFn,userDataReducerFn} from '../../../redux/authSlice';
 
 const SignIn = (props) => {
-    const authCtx = useContext(AuthContext)
+// =========================redux store is here===========
+const isLoggin= useSelector(state=>state.Auth.isLoggin);
+const isSignup= useSelector(state=>state.Auth.isSignUp)
+
+const dispatch =useDispatch();
+
     const navigaete=useNavigate()
     const inputEmail=useRef();
     const inputPassword =useRef();
@@ -36,11 +42,11 @@ const signInFormHandler=async (e)=>{
         // console.log("SignIn successfully",data);
 
        
-         console.log(typeof data)
-        authCtx?.isLogginHandler(true);
-        authCtx?.userDetailsHandler(data);
-        authCtx?.tokenHandler(data?.idToken);
-
+         console.log("sigin data",data);
+         dispatch(isLogginReducerFn(true))
+         dispatch(userIdReducerFn(data?.idToken));
+         dispatch(userDataReducerFn(data))
+       
     //    navigaete('/');
         }).catch(err=>{
             console.log(err.message);
@@ -66,6 +72,10 @@ const signInFormHandler=async (e)=>{
     // const data = res.json();
    navigaete('/')
 }
+const signupReducer=()=>{
+    dispatch(isSignUpReducerFn(true));
+    console.log("login",isSignup)
+}
 
   return (
     <div className={classes.formDiv}>
@@ -90,7 +100,7 @@ const signInFormHandler=async (e)=>{
         
     </form>
     <div className={classes.inputdiv3} >Don't have an account?
-    <span style={{textDecoration:'underline',color:'blue',cursor:'pointer'}} onClick={props.authHandler}>SignUp</span>
+    <span onClick={signupReducer} style={{textDecoration:'underline',color:'blue',cursor:'pointer'}}>SignUp</span>
     </div>
 
 </div>

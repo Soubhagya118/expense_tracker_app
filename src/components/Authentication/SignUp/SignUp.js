@@ -1,22 +1,23 @@
 import React, { useRef, useState ,useContext} from 'react';
 import classes from './SignUp.module.css';
-import { useNavigate } from 'react-router-dom';
-import AuthContext from '../../store/AuthCtx';
+import { useNavigate,Link } from 'react-router-dom';
+
+// ===================redux===============
+import {useDispatch, useSelector} from 'react-redux';
+import {isSignUpReducerFn, isLogginReducerFn,userIdReducerFn,userDataReducerFn} from '../../../redux/authSlice'
+// import { isLogginReducerFn,userIdReducerFn,userDataReducerFn } from '../../../redux/authSlice';
 
 const SignUp = (props) => {
-const [isLoggin,setIsLoggin] =useState();    
-const inputEmail =useRef();
+const isLoggin = useSelector(state=>state.Auth.isLoggin);
+const issignUp = useSelector(state=>state.Auth.isSignUp)
+const dispatch=useDispatch()
+
+  const inputEmail =useRef();
 const inputPassword =useRef();
 const inputConfirmPassword =useRef();
 const navigaete =useNavigate();
-const authCtxx= useContext(AuthContext);
 
 // const [storeAuth,setStoreAuth] =useState();
-let data;
-if(authCtxx?.idToken){
-  data=authCtxx?.idToken;
-}else{data=[]}
-const [idTokenData,setIdTokenData] =useState(data);
 
 let url='https://identitytoolkit.googleapis.com/v1/accounts:'
 let api='AIzaSyAkMk6UO0ngHH7v1mMLuxpVzXm_0oJ1wC4';
@@ -43,14 +44,20 @@ throw new Error('...SignUp Error')
 }
  const data= res.json();
  console.log("signup succesfully",data);
- authCtxx.isLogginHandler(true)
-
+ dispatch(isLogginReducerFn(true));
+ dispatch(userIdReducerFn(data?.idToken))
+dispatch(userDataReducerFn(data))
  navigaete('/')
 
+}
+const signInreducer=()=>{
+dispatch(isSignUpReducerFn(false))
+console.log("issignup",issignUp)
 }
 
   return (
     <div>
+    {!isLoggin &&
       <section >
         <div className={classes.formDiv}>
             <form className={classes.form} onSubmit={signUpFormHandler}>
@@ -62,9 +69,9 @@ throw new Error('...SignUp Error')
 
                 <label htmlFor='password'>Password</label>
                 <input id='password' type='password' style={{border:'1px solid black'}} ref={inputPassword} required/>
-                {!isLoggin?<>
+                
                 <label htmlFor='confirmpassword'>Confirm Password</label>
-                <input id='confirmpassword' type='password' style={{border:'1px solid black'}} ref={inputConfirmPassword} required/></>:''}
+                <input id='confirmpassword' type='password' style={{border:'1px solid black'}} ref={inputConfirmPassword} required/>
 
 
                 </div>
@@ -76,11 +83,16 @@ throw new Error('...SignUp Error')
                 
             </form>
             
-            <div className={classes.inputdiv3} >Have an Account?<span style={{textDecoration:'underline',color:'blue',cursor:'pointer'}} onClick={props.authHandler}>LogIn</span></div>
+            <div className={classes.inputdiv3} >
+            Have an Account?
+            <span onClick={signInreducer}
+            style={{textDecoration:'underline',color:'blue',cursor:'pointer'}}
+            >LogIn</span>
+            </div>
 
 
         </div>
-      </section>
+      </section>}
     </div>
   )
 }

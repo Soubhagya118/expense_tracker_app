@@ -1,13 +1,19 @@
 import React,{useContext} from 'react';
 import AuthContext from '../../store/AuthCtx';
 
+//====================================redux====================
+import { useDispatch,useSelector } from 'react-redux';
+import { isLogginReducerFn,userIdReducerFn } from '../../../redux/authSlice';
+
 const Verifyemail = () => {
    const url='https://identitytoolkit.googleapis.com/v1/accounts:';
    const api ='AIzaSyAkMk6UO0ngHH7v1mMLuxpVzXm_0oJ1wC4';
 
-    const authCtx= useContext(AuthContext);
-    let idToken= authCtx?.userDetails?.idToken;
-    // console.log("idToken",idToken)
+// =============================redux store===========
+const userId=useSelector(state=>state.Auth?.userId);
+   
+
+    console.log("verify",userId)
 
     const verifyEmailHandler = async(e)=>{
 
@@ -19,12 +25,12 @@ const Verifyemail = () => {
                      },
              body:JSON.stringify({
                 requestType: "VERIFY_EMAIL",
-                idToken:idToken
+                idToken:userId
              })
         }).then(res=>{
             return res.json();
         }).then(data=>{
-            console.log(data)
+            console.log("verify mail data",data)
         }).catch(err=>{
             console.log("verifyemail err",err.message)
         })
