@@ -8,16 +8,19 @@ const Cart = (props) => {
   const reduxxcartData= useSelector(state=>state.cart);
   const expenseItems=useSelector(state=>state.expenses.items)
 
-  const totalAmount= reduxxcartData?.totalAmount;
+  const totalAmount= reduxxcartData?.carts?.reduce((a,c)=>a+((+c.money)*(+c.quantity)),0);
+  console.log("totalAmount in CArt.........................",totalAmount)
   const cartData=reduxxcartData?.carts;
 
   const navigate=useNavigate();
 
   const dispatch=useDispatch();
 
+
+  
   const closeCartHandler=()=>{
     dispatch(cartOnReducerFn(false));
-navigate("/")
+    navigate("/")
 
   }
   return (
@@ -52,6 +55,7 @@ navigate("/")
 
           </ul>
           <div className='text-center flex justify-center gap-5 mt-5'>
+          {totalAmount && <h1 className='m-auto text-lg'>Total Amount = <span className=''>{totalAmount}</span></h1>}
           <button onClick={closeCartHandler} 
           className='border-2 border-blue-500 px-3 cursor-pointer bg-blue-500 text-white rounded-md'
           >Close</button>

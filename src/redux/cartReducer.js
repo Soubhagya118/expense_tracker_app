@@ -1,14 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 let cartData= localStorage.getItem('cart') !=null ? JSON.parse(localStorage.getItem('cart')) :[]
-let totalCartP= localStorage.getItem('totalCart') != null ? JSON.parse(localStorage.getItem('totalCart')) :0
+// let totalCartP= localStorage.getItem('totalCart') != null ? JSON.parse(localStorage.getItem('totalCart')) :0
 
 const cartReducer =createSlice(
     {
         name:'cart',
         initialState:{
             carts:cartData,
-            totalCartAmount:0 ,//totalCartP,
+            // totalCartAmount:0 ,//totalCartP,
             isCart:false
         },
         reducers:{
@@ -18,8 +18,8 @@ const cartReducer =createSlice(
                 let findCartEle= state.carts[findCartEleInd]
                 if(!findCartEle){
                     state.carts.push(action.payload);
-                    state.totalCartAmount= state.carts.reduce((a,c)=>a+(+c.money *(+c.quantity)),0);
-                    localStorage.setItem("totalCart",JSON.stringify(state.totalCartAmount));
+                    // state.totalCartAmount= state.carts.reduce((a,c)=>a+(+c.money *(+c.quantity)),0);
+                    // localStorage.setItem("totalCart",JSON.stringify(state.totalCartAmount));
                     localStorage.setItem("cart",JSON.stringify(state.carts))
 
                 }else{
@@ -27,8 +27,8 @@ const cartReducer =createSlice(
                 state.carts=[...state.carts];
                 state.carts[findCartEleInd]=findCartEle;
 
-                state.totalCartAmount= state.carts.reduce((a,c)=>{return a+(+c.money *(+c.quantity))},0);
-                localStorage.setItem("totalCart",JSON.stringify(state.totalCartAmount));
+                // state.totalCartAmount= state.carts.reduce((a,c)=>{return a+(+c.money *(+c.quantity))},0);
+                // localStorage.setItem("totalCart",JSON.stringify(state.totalCartAmount));
                 localStorage.setItem("cart",JSON.stringify(state.carts))
 
                 }
