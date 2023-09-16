@@ -32,7 +32,9 @@ element:<Auth/>
   path:'/expanses',
   element:<Expanses/>
   
-},{
+}
+,
+{
     path:'/cart',
 element:<Cart/>
 }

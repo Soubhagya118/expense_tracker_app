@@ -1,15 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-let cartData= localStorage.getItem('cart') !=null ? JSON.parse(localStorage.getItem('cart')) :[]
+// let cartData= localStorage.getItem('cart') !=null ? JSON.parse(localStorage.getItem('cart')) :[]
 // let totalCartP= localStorage.getItem('totalCart') != null ? JSON.parse(localStorage.getItem('totalCart')) :0
 
 const cartReducer =createSlice(
     {
         name:'cart',
         initialState:{
-            carts:cartData,
+            carts:[],
+            isCart:false,
+            isnoti:false,
+            notification:{}
             // totalCartAmount:0 ,//totalCartP,
-            isCart:false
         },
         reducers:{
             addToCartReducerFn:(state,action)=>{
@@ -20,7 +22,7 @@ const cartReducer =createSlice(
                     state.carts.push(action.payload);
                     // state.totalCartAmount= state.carts.reduce((a,c)=>a+(+c.money *(+c.quantity)),0);
                     // localStorage.setItem("totalCart",JSON.stringify(state.totalCartAmount));
-                    localStorage.setItem("cart",JSON.stringify(state.carts))
+                    // localStorage.setItem("cart",JSON.stringify(state.carts))
 
                 }else{
                 findCartEle={...findCartEle,quantity:findCartEle.quantity+action.payload.quantity};
@@ -29,7 +31,7 @@ const cartReducer =createSlice(
 
                 // state.totalCartAmount= state.carts.reduce((a,c)=>{return a+(+c.money *(+c.quantity))},0);
                 // localStorage.setItem("totalCart",JSON.stringify(state.totalCartAmount));
-                localStorage.setItem("cart",JSON.stringify(state.carts))
+                // localStorage.setItem("cart",JSON.stringify(state.carts))
 
                 }
             },
@@ -44,7 +46,7 @@ const expenseItems=action.payload.expenseItems?.find(e=>e.id == action.payload.i
 if(!expenseItems){
     console.log("")
     state.carts = state.carts?.filter(e=>e.id!==action.payload.id);
-    localStorage.setItem("cart",JSON.stringify(state.carts));
+    // localStorage.setItem("cart",JSON.stringify(state.carts));
 
 }
 
@@ -70,9 +72,14 @@ if(!expenseItems){
               }
             
 
+            },
+            notificationReducerFn : (state,action)=>{
+                state.isnoti=true
+                state.notification=action.payload
             }
+
         }
     }
 );
-export const {addToCartReducerFn,cartOnReducerFn,removeReducerFn}=cartReducer.actions;
+export const {addToCartReducerFn,cartOnReducerFn,removeReducerFn,notificationReducerFn}=cartReducer.actions;
 export default cartReducer.reducer

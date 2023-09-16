@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {addToCartReducerFn,cartOnReducerFn,removeReducerFn} from '../../redux/cartReducer';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +16,6 @@ const Cart = (props) => {
 
   const dispatch=useDispatch();
 
-
   
   const closeCartHandler=()=>{
     dispatch(cartOnReducerFn(false));
@@ -25,9 +24,9 @@ const Cart = (props) => {
   }
   return (
     <div className='bg-transparent w-full'>
-        <section className='grid m-auto w-2/4 my-10 h-60 bottom-2 border-black-900 '>
-          <h1 className='text-center text-3xl'>Cart</h1>
-          <ul>
+              <h1 className='text-center text-3xl my-2'>Cart</h1>
+        <section className='grid m-auto w-2/4 my-2 h-auto shadow-xl border-2 border-black-30 bottom-2 border-black-900 '>
+          <ul className='h-auto max-h[32rem] overflow-auto'>
           {cartData?.map((ele)=><li key={ele?.id} className='h-10 text-justify flex gap-5 m-auto justify-between mt-3'>
 
             <div className='text-start ml-2 pl-10 flex-1'>
@@ -55,7 +54,7 @@ const Cart = (props) => {
 
           </ul>
           <div className='text-center flex justify-center gap-5 mt-5'>
-          {totalAmount && <h1 className='m-auto text-lg'>Total Amount = <span className=''>{totalAmount}</span></h1>}
+           <h1 className='m-auto text-lg'>Total Amount = <span className=''>{totalAmount}</span></h1>
           <button onClick={closeCartHandler} 
           className='border-2 border-blue-500 px-3 cursor-pointer bg-blue-500 text-white rounded-md'
           >Close</button>
